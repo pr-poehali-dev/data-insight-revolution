@@ -1,6 +1,6 @@
-import { Compass, Lock, Sparkles, ShieldCheck, Wallet, Leaf, Plus, Minus, Mail } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import Icon from "@/components/ui/icon"
 
 interface FAQ {
   question: string
@@ -9,6 +9,7 @@ interface FAQ {
 
 const Index = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [email, setEmail] = useState("")
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index)
@@ -16,107 +17,138 @@ const Index = () => {
 
   const faqs: FAQ[] = [
     {
-      question: "Насколько физически сложен этот тур?",
+      question: "Кто может зарегистрироваться на платформе?",
       answer:
-        "Экспедиция в Скрытую Долину требует отличной физической подготовки. Вам предстоит пройти более 15 км по джунглям, спуститься по веревке с 80-метровой высоты и преодолеть подземные реки. Участники должны быть готовы нести рюкзак весом 15 кг и иметь опыт спелеологии или треккинга.",
+        "АгроФорум открыт для всех специалистов агропромышленного комплекса: агрономов, зоотехников, руководителей хозяйств, агрономов-консультантов, представителей поставщиков техники и удобрений, а также научных сотрудников в области сельского хозяйства.",
     },
     {
-      question: "Что входит в стоимость тура?",
+      question: "Как работают разделы форума?",
       answer:
-        "В стоимость экспедиции включены все разрешения, профессиональные гиды, снаряжение для безопасности, палаточное оборудование, питание на маршруте, трансфер от базового лагеря и страховка экстренной эвакуации. Личные вещи, такие как одежда и средства гигиены, не включены.",
+        "Форум разделён по тематикам: растениеводство, животноводство, техника и оборудование, агрохимия, законодательство и субсидии, маркетинг продукции. В каждом разделе можно создавать темы, задавать вопросы, делиться опытом и получать ответы от коллег.",
     },
     {
-      question: "Безопасно ли исследовать пещеру Скрытой Долины?",
+      question: "Что такое каналы блогеров?",
       answer:
-        "Безопасность — наш абсолютный приоритет. Все гиды — сертифицированные спасатели-спелеологи, мы используем профессиональное снаряжение, поддерживаем постоянную связь с базовым лагерем и имеем комплексные протоколы на случай ЧП. Погодные условия отслеживаются непрерывно.",
+        "Это персональные страницы ведущих экспертов-аграриев, где они публикуют статьи, видеообзоры, результаты испытаний новых сортов и технологий. Вы можете подписаться на интересных авторов и получать их публикации в ленте.",
     },
     {
-      question: "Как забронировать место?",
+      question: "Как устроены чаты?",
       answer:
-        "Группы ограничены 10 участниками, экспедиции проводятся только в сухой сезон (февраль-август). Бронируйте за 6-12 месяцев через наш сайт. Предоплата 50% закрепляет ваше место, полная оплата — за 30 дней до выезда.",
+        "На платформе есть тематические групповые чаты по регионам и направлениям, а также возможность личной переписки с другими участниками. Чаты помогают оперативно решать вопросы и находить партнёров поблизости.",
     },
   ]
 
+  const forumCategories: { icon: string; title: string; topics: number; color: string }[] = [
+    { icon: "Sprout", title: "Растениеводство", topics: 1240, color: "from-green-700/40 to-green-900/20" },
+    { icon: "Cow", title: "Животноводство", topics: 876, color: "from-emerald-700/40 to-emerald-900/20" },
+    { icon: "Tractor", title: "Техника и оборудование", topics: 654, color: "from-lime-700/40 to-lime-900/20" },
+    { icon: "FlaskConical", title: "Агрохимия и почвы", topics: 432, color: "from-green-600/40 to-green-800/20" },
+    { icon: "FileText", title: "Субсидии и законы", topics: 318, color: "from-teal-700/40 to-teal-900/20" },
+    { icon: "TrendingUp", title: "Сбыт и маркетинг", topics: 290, color: "from-emerald-600/40 to-emerald-800/20" },
+  ]
+
+  const bloggers = [
+    { name: "Иван Петров", role: "Агроном, 20 лет опыта", followers: "12.4K", posts: 87, avatar: "🌾" },
+    { name: "Мария Сидорова", role: "Эксперт по животноводству", followers: "8.7K", posts: 64, avatar: "🐄" },
+    { name: "Алексей Громов", role: "Фермер, Краснодарский край", followers: "15.2K", posts: 112, avatar: "🚜" },
+  ]
+
+  const steps = [
+    { num: "01", title: "Зарегистрируйтесь", desc: "Создайте профиль специалиста — укажите регион, направление и опыт работы" },
+    { num: "02", title: "Выберите разделы", desc: "Подпишитесь на интересующие темы форума и каналы экспертов" },
+    { num: "03", title: "Общайтесь", desc: "Задавайте вопросы, делитесь опытом и находите партнёров" },
+    { num: "04", title: "Развивайтесь", desc: "Получайте актуальные знания и применяйте их в своём хозяйстве" },
+  ]
+
   return (
-    <div className="min-h-screen bg-[#0B0F12] text-white">
+    <div className="min-h-screen text-white" style={{ backgroundColor: "#0D1F0F" }}>
       {/* Hero Section */}
       <div className="relative min-h-screen">
-        {/* Background Image with Overlay */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: "url(https://www.elledecoration.vn/wp-content/uploads/2025/03/1-son-doong.jpg)",
+            backgroundImage:
+              "url(https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&q=80)",
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/80" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-green-950/70 to-[#0D1F0F]/95" />
         </div>
 
         {/* Navigation */}
         <nav className="relative z-10 flex items-center justify-between p-6">
-          {/* Logo */}
-          <div className="flex items-center gap-2 px-4 py-2 bg-black/40 ring-1 ring-white/20 backdrop-blur rounded-full">
-            <Compass className="w-5 h-5" />
-            <span className="font-medium text-balance">Horizon Adventures</span>
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: "rgba(21,128,61,0.25)", border: "1px solid rgba(74,222,128,0.25)", backdropFilter: "blur(12px)" }}>
+            <Icon name="Sprout" size={20} className="text-green-400" />
+            <span className="font-semibold text-white">АгроФорум</span>
           </div>
 
-          {/* Navigation Links */}
           <div className="hidden md:flex items-center gap-1">
-            {["Экспедиция", "Безопасность", "Галерея", "Вопросы", "Контакты"].map((item) => (
+            {["Форум", "Чаты", "Блогеры", "Вопросы", "Контакты"].map((item) => (
               <a
                 key={item}
                 href="#"
-                className="px-4 py-2 bg-black/40 ring-1 ring-white/20 backdrop-blur rounded-full hover:bg-black/50 transition-colors"
+                className="px-4 py-2 rounded-full hover:bg-green-900/40 transition-colors text-white/90"
+                style={{ background: "rgba(0,0,0,0.3)", border: "1px solid rgba(74,222,128,0.15)", backdropFilter: "blur(12px)" }}
               >
                 {item}
               </a>
             ))}
           </div>
 
-          {/* Action Buttons */}
           <div className="flex items-center gap-3">
             <a
               href="#"
-              className="px-4 py-2 bg-black/40 ring-1 ring-white/20 backdrop-blur rounded-full hover:bg-black/50 transition-colors"
+              className="px-4 py-2 rounded-full text-white/90 hover:bg-green-900/40 transition-colors"
+              style={{ background: "rgba(0,0,0,0.3)", border: "1px solid rgba(74,222,128,0.15)", backdropFilter: "blur(12px)" }}
             >
               Войти
             </a>
-            <Button className="bg-white text-black hover:bg-white/90 rounded-full px-6">Забронировать</Button>
+            <Button className="rounded-full px-6 font-semibold" style={{ background: "#16a34a", color: "white" }}>
+              Присоединиться
+            </Button>
           </div>
         </nav>
 
         {/* Hero Content */}
         <div className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-120px)] px-6 text-center">
-          {/* Badge */}
-          <div className="mb-6 px-4 py-2 bg-black/40 ring-1 ring-white/20 backdrop-blur rounded-full">
-            <span className="text-sm font-medium">Эксклюзивные групповые экспедиции</span>
+          <div className="mb-6 px-4 py-2 rounded-full" style={{ background: "rgba(21,128,61,0.3)", border: "1px solid rgba(74,222,128,0.3)", backdropFilter: "blur(12px)" }}>
+            <span className="text-sm font-medium text-green-300">Сообщество специалистов АПК России</span>
           </div>
 
-          {/* Main Headline */}
-          <h1 className="text-6xl md:text-8xl font-light tracking-tight mb-6 text-balance">Войдите в затерянный мир.</h1>
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 text-balance leading-tight">
+            Форум аграриев.<br />
+            <span style={{ color: "#4ade80" }}>Знания. Опыт. Рост.</span>
+          </h1>
 
-          {/* Subheading */}
-          <p className="text-xl md:text-2xl text-white/90 max-w-4xl mb-12 leading-relaxed text-pretty">
-            Исследуйте грандиозные залы пещеры Скрытой Долины в Южной Америке — уникальную экосистему с собственными джунглями и погодой — в рамках 4-дневной экспедиции с гидом.
+          <p className="text-xl md:text-2xl text-white/80 max-w-4xl mb-12 leading-relaxed text-pretty">
+            Объединяем агрономов, зоотехников и руководителей хозяйств. Обсуждайте технологии, делитесь опытом и находите партнёров по всей стране.
           </p>
 
-          {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 mb-16">
-            <Button size="lg" className="bg-white text-black hover:bg-white/90 rounded-full px-8 py-4 text-lg">
-              Забронировать экспедицию
+            <Button size="lg" className="rounded-full px-8 py-4 text-lg font-semibold" style={{ background: "#16a34a", color: "white" }}>
+              Начать общение
             </Button>
             <Button
               size="lg"
-              variant="outline"
-              className="bg-black/40 ring-1 ring-white/20 backdrop-blur border-0 text-white hover:bg-black/50 rounded-full px-8 py-4 text-lg"
+              className="rounded-full px-8 py-4 text-lg border-0 text-white"
+              style={{ background: "rgba(0,0,0,0.35)", border: "1px solid rgba(74,222,128,0.25)", backdropFilter: "blur(12px)" }}
             >
-              Смотреть маршрут
+              Смотреть форум
             </Button>
           </div>
 
-          {/* Footer Note */}
-          <div className="flex items-center gap-2 px-4 py-2 bg-black/40 ring-1 ring-white/20 backdrop-blur rounded-full">
-            <Lock className="w-4 h-4" />
-            <span className="text-sm font-medium">Безопасность — наш приоритет</span>
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-white/70">
+            <div className="flex items-center gap-2">
+              <Icon name="Users" size={16} className="text-green-400" />
+              <span>15 000+ участников</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Icon name="MessageSquare" size={16} className="text-green-400" />
+              <span>50 000+ сообщений</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Icon name="MapPin" size={16} className="text-green-400" />
+              <span>85 регионов России</span>
+            </div>
           </div>
         </div>
       </div>
@@ -124,329 +156,218 @@ const Index = () => {
       {/* Features Section */}
       <section className="relative z-10 py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
-            {/* Expert-Led Tours */}
-            <div className="rounded-2xl bg-black/20 ring-1 ring-white/15 backdrop-blur p-8 text-center">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-black/30 ring-1 ring-white/20 mb-6">
-                <Sparkles className="w-6 h-6" />
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: "#4ade80" }}>Всё для работы аграрного сообщества</h2>
+            <p className="text-white/60 text-lg max-w-2xl mx-auto">Три ключевых инструмента на одной платформе</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="rounded-2xl p-8 text-center" style={{ background: "rgba(21,128,61,0.12)", border: "1px solid rgba(74,222,128,0.2)", backdropFilter: "blur(12px)" }}>
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl mb-6" style={{ background: "rgba(21,128,61,0.3)", border: "1px solid rgba(74,222,128,0.3)" }}>
+                <Icon name="MessagesSquare" size={28} className="text-green-400" />
               </div>
-              <h3 className="text-xl font-semibold mb-4">Туры с экспертами</h3>
-              <p className="text-white/80 leading-relaxed">Ведут геологи, спелеологи и местные специалисты.</p>
+              <h3 className="text-xl font-bold mb-4">Форум</h3>
+              <p className="text-white/70 leading-relaxed">Тематические разделы по всем направлениям АПК. Задавайте вопросы, получайте ответы экспертов и делитесь опытом.</p>
             </div>
 
-            {/* World-Class Safety */}
-            <div className="rounded-2xl bg-black/20 ring-1 ring-white/15 backdrop-blur p-8 text-center">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-black/30 ring-1 ring-white/20 mb-6">
-                <ShieldCheck className="w-6 h-6" />
+            <div className="rounded-2xl p-8 text-center" style={{ background: "rgba(21,128,61,0.12)", border: "1px solid rgba(74,222,128,0.2)", backdropFilter: "blur(12px)" }}>
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl mb-6" style={{ background: "rgba(21,128,61,0.3)", border: "1px solid rgba(74,222,128,0.3)" }}>
+                <Icon name="MessageCircle" size={28} className="text-green-400" />
               </div>
-              <h3 className="text-xl font-semibold mb-4">Мировой уровень безопасности</h3>
-              <p className="text-white/80 leading-relaxed">Строгие протоколы и современное снаряжение.</p>
+              <h3 className="text-xl font-bold mb-4">Чаты</h3>
+              <p className="text-white/70 leading-relaxed">Групповые чаты по регионам и направлениям, личные переписки. Оперативно решайте вопросы и находите партнёров рядом.</p>
             </div>
 
-            {/* All-Inclusive Package */}
-            <div className="rounded-2xl bg-black/20 ring-1 ring-white/15 backdrop-blur p-8 text-center">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-black/30 ring-1 ring-white/20 mb-6">
-                <Wallet className="w-6 h-6" />
+            <div className="rounded-2xl p-8 text-center" style={{ background: "rgba(21,128,61,0.12)", border: "1px solid rgba(74,222,128,0.2)", backdropFilter: "blur(12px)" }}>
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl mb-6" style={{ background: "rgba(21,128,61,0.3)", border: "1px solid rgba(74,222,128,0.3)" }}>
+                <Icon name="Rss" size={28} className="text-green-400" />
               </div>
-              <h3 className="text-xl font-semibold mb-4">Все включено</h3>
-              <p className="text-white/80 leading-relaxed">Разрешения, снаряжение, питание и трансфер.</p>
-            </div>
-
-            {/* Eco-Friendly Caving */}
-            <div className="rounded-2xl bg-black/20 ring-1 ring-white/15 backdrop-blur p-8 text-center">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-black/30 ring-1 ring-white/20 mb-6">
-                <Leaf className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-semibold mb-4">Эко-спелеология</h3>
-              <p className="text-white/80 leading-relaxed">Мы бережно сохраняем экосистему пещеры.</p>
+              <h3 className="text-xl font-bold mb-4">Каналы блогеров</h3>
+              <p className="text-white/70 leading-relaxed">Экспертные публикации ведущих аграриев страны. Подпишитесь на авторов и получайте свежие материалы в ленте.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Journey Section */}
+      {/* Forum Categories */}
       <section className="relative z-10 py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="rounded-3xl bg-white/5 ring-1 ring-white/10 backdrop-blur p-12">
-            {/* Section Header */}
+          <div className="rounded-3xl p-12" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(74,222,128,0.1)", backdropFilter: "blur(12px)" }}>
             <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 text-balance">Ваше эпическое путешествие</h2>
-              <p className="text-xl text-white/80 max-w-3xl mx-auto text-pretty">
-                От джунглей до подземных лагерей — вот что вас ждет.
-              </p>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">Разделы форума</h2>
+              <p className="text-white/60 text-lg">Найдите свою тему и вступайте в обсуждение</p>
             </div>
 
-            {/* Journey Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-              {/* Phase 1: Briefing & Prep */}
-              <div className="rounded-2xl bg-white/5 ring-1 ring-white/10 backdrop-blur p-8 h-80 flex flex-col">
-                <div className="flex-1">
-                  <div className="text-3xl font-bold text-white/60 mb-4">01.</div>
-                  <h3 className="text-xl font-semibold mb-4">Инструктаж</h3>
-                  <p className="text-white/80 leading-relaxed text-sm">
-                    Ваше приключение начинается в базовом лагере с полного инструктажа по безопасности и проверки снаряжения.
-                  </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {forumCategories.map((cat) => (
+                <div
+                  key={cat.title}
+                  className={`rounded-2xl p-6 cursor-pointer hover:scale-[1.02] transition-transform bg-gradient-to-br ${cat.color}`}
+                  style={{ border: "1px solid rgba(74,222,128,0.15)" }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: "rgba(21,128,61,0.4)" }}>
+                      <Icon name={cat.icon} size={24} className="text-green-300" fallback="Folder" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg mb-1">{cat.title}</h3>
+                      <p className="text-white/50 text-sm">{cat.topics.toLocaleString()} тем</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-
-              {/* Phase 2: The Trek */}
-              <div className="rounded-2xl bg-white/5 ring-1 ring-white/10 backdrop-blur p-8 h-80 flex flex-col">
-                <div className="flex-1">
-                  <div className="text-3xl font-bold text-white/60 mb-4">02.</div>
-                  <h3 className="text-xl font-semibold mb-4">Треккинг</h3>
-                  <p className="text-white/80 leading-relaxed text-sm">
-                    Идите через нетронутые джунгли, пересекайте реки и ночуйте в удаленных точках по пути ко входу в Скрытую Долину.
-                  </p>
-                </div>
-              </div>
-
-              {/* Phase 3: Caving */}
-              <div className="rounded-2xl bg-white/5 ring-1 ring-white/10 backdrop-blur p-8 h-80 flex flex-col">
-                <div className="flex-1">
-                  <div className="text-3xl font-bold text-white/60 mb-4">03.</div>
-                  <h3 className="text-xl font-semibold mb-4">Спелеология</h3>
-                  <p className="text-white/80 leading-relaxed text-sm">
-                    Спуститесь в пещеру, чтобы увидеть гигантские сталагмиты, исследовать огромные залы и уникальные подземные джунгли.
-                  </p>
-                </div>
-              </div>
-
-              {/* Phase 4: Base Camp */}
-              <div className="rounded-2xl bg-white/5 ring-1 ring-white/10 backdrop-blur p-8 h-80 flex flex-col">
-                <div className="flex-1">
-                  <div className="text-3xl font-bold text-white/60 mb-4">04.</div>
-                  <h3 className="text-xl font-semibold mb-4">Базовый лагерь</h3>
-                  <p className="text-white/80 leading-relaxed text-sm">
-                    Проведите ночи на потрясающих стоянках внутри пещеры, делясь историями с группой перед обратным путем.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
 
-            {/* Check Availability Button */}
             <div className="text-center">
-              <Button
-                size="lg"
-                className="bg-white text-black hover:bg-white/90 rounded-full px-12 py-4 text-lg font-semibold"
-              >
-                Проверить наличие мест
+              <Button className="rounded-full px-8 font-semibold" style={{ background: "#16a34a", color: "white" }}>
+                Смотреть все разделы
               </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
+      {/* Bloggers Section */}
       <section className="relative z-10 py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="rounded-3xl bg-white/5 ring-1 ring-white/10 backdrop-blur p-12">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-              {/* Left Column - Title and Description */}
-              <div>
-                <h2 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 text-balance">
-                  Частые вопросы
-                </h2>
-                <p className="text-xl text-white/80 leading-relaxed text-pretty">
-                  Все, что нужно знать об экспедиции: от физических требований до бронирования места в этом эксклюзивном приключении.
-                </p>
-              </div>
-
-              {/* Right Column - FAQ Accordion */}
-              <div className="space-y-4">
-                {faqs.map((faq, index) => (
-                  <div
-                    key={index}
-                    className="rounded-2xl bg-white/5 ring-1 ring-white/10 backdrop-blur overflow-hidden"
-                  >
-                    <button
-                      onClick={() => toggleFaq(index)}
-                      className="w-full p-6 text-left flex items-center justify-between hover:bg-white/5 transition-colors"
-                    >
-                      <h3 className="text-lg font-semibold pr-4">{faq.question}</h3>
-                      {openFaq === index ? (
-                        <Minus className="w-5 h-5 flex-shrink-0" />
-                      ) : (
-                        <Plus className="w-5 h-5 flex-shrink-0" />
-                      )}
-                    </button>
-                    {openFaq === index && (
-                      <div className="px-6 pb-6">
-                        <p className="text-white/80 leading-relaxed">{faq.answer}</p>
-                      </div>
-                    )}
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Популярные блогеры</h2>
+            <p className="text-white/60 text-lg">Эксперты, чьи знания уже помогли тысячам аграриев</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {bloggers.map((b) => (
+              <div
+                key={b.name}
+                className="rounded-2xl p-8"
+                style={{ background: "rgba(21,128,61,0.1)", border: "1px solid rgba(74,222,128,0.2)", backdropFilter: "blur(12px)" }}
+              >
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center text-3xl" style={{ background: "rgba(21,128,61,0.3)" }}>
+                    {b.avatar}
                   </div>
-                ))}
+                  <div>
+                    <h3 className="font-bold text-lg">{b.name}</h3>
+                    <p className="text-white/60 text-sm">{b.role}</p>
+                  </div>
+                </div>
+                <div className="flex justify-between text-sm mb-6">
+                  <div className="text-center">
+                    <p className="font-bold text-green-400 text-xl">{b.followers}</p>
+                    <p className="text-white/50">подписчиков</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="font-bold text-green-400 text-xl">{b.posts}</p>
+                    <p className="text-white/50">публикаций</p>
+                  </div>
+                </div>
+                <Button variant="outline" className="w-full rounded-full border-green-700 text-green-300 hover:bg-green-900/30">
+                  Подписаться
+                </Button>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="relative z-10 py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="rounded-3xl p-12" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(74,222,128,0.1)" }}>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">Как начать</h2>
+              <p className="text-white/60 text-lg">Четыре простых шага до профессионального сообщества</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {steps.map((step) => (
+                <div key={step.num} className="text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6 text-2xl font-bold" style={{ background: "rgba(21,128,61,0.3)", border: "1px solid rgba(74,222,128,0.3)", color: "#4ade80" }}>
+                    {step.num}
+                  </div>
+                  <h3 className="font-bold text-xl mb-3">{step.title}</h3>
+                  <p className="text-white/60 leading-relaxed">{step.desc}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Contact Section */}
+      {/* FAQ */}
       <section className="relative z-10 py-24 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="rounded-3xl bg-black/20 ring-1 ring-white/15 backdrop-blur p-12">
-            {/* Section Header */}
-            <div className="text-center mb-16">
-              <h2 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 text-balance">Свяжитесь с нами</h2>
-            </div>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Частые вопросы</h2>
+          </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-              {/* Left Column - Contact Form */}
-              <div className="rounded-2xl bg-white/95 text-black p-8 shadow-2xl">
-                <h3 className="text-2xl font-bold mb-6">Отправить запрос</h3>
-                <form className="space-y-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium mb-2">
-                      Имя
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Ваше полное имя"
-                    />
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div
+                key={index}
+                className="rounded-2xl overflow-hidden"
+                style={{ background: "rgba(21,128,61,0.1)", border: "1px solid rgba(74,222,128,0.2)" }}
+              >
+                <button
+                  onClick={() => toggleFaq(index)}
+                  className="w-full flex items-center justify-between p-6 text-left hover:bg-green-900/20 transition-colors"
+                >
+                  <span className="font-semibold text-lg pr-4">{faq.question}</span>
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center" style={{ background: "rgba(21,128,61,0.4)" }}>
+                    <Icon name={openFaq === index ? "Minus" : "Plus"} size={16} className="text-green-400" />
                   </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium mb-2">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="your.email@example.com"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium mb-2">
-                      Сообщение
-                    </label>
-                    <textarea
-                      id="message"
-                      rows={5}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                      placeholder="Расскажите о ваших интересах в экспедиции..."
-                    />
-                  </div>
-                  <Button className="w-full bg-black text-white hover:bg-gray-800 rounded-lg py-3 font-normal text-base">
-                    Отправить сообщение
-                  </Button>
-                </form>
+                </button>
+                {openFaq === index && (
+                  <div className="px-6 pb-6 text-white/70 leading-relaxed">{faq.answer}</div>
+                )}
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              {/* Right Column - Contact Info */}
-              <div className="space-y-8">
-                <div>
-                  <p className="text-xl text-white/90 leading-relaxed text-pretty">
-                    По вопросам индивидуальных туров, партнерства или для СМИ — свяжитесь с нами. Мы отвечаем в течение одного рабочего дня.
-                  </p>
-                </div>
-
-                {/* Profile Card */}
-                <div className="rounded-2xl bg-white/95 text-black p-6 shadow-2xl">
-                  <div className="flex items-center gap-4 mb-4">
-                    <img
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
-                      alt="Маркус Уильямс"
-                      className="w-16 h-16 rounded-full object-cover"
-                    />
-                    <div>
-                      <h4 className="text-lg font-semibold">Маркус Уильямс</h4>
-                      <p className="text-gray-600">Руководитель экспедиций</p>
-                    </div>
-                  </div>
-                  <Button className="w-full bg-black text-white hover:bg-gray-800 rounded-lg flex items-center justify-center gap-2">
-                    <Mail className="w-4 h-4" />
-                    Написать
-                  </Button>
-                </div>
-              </div>
+      {/* CTA / Newsletter */}
+      <section className="relative z-10 py-24 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="rounded-3xl p-12" style={{ background: "rgba(21,128,61,0.15)", border: "1px solid rgba(74,222,128,0.25)", backdropFilter: "blur(20px)" }}>
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-8" style={{ background: "rgba(21,128,61,0.4)" }}>
+              <Icon name="Mail" size={32} className="text-green-400" />
             </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Подпишитесь на новости</h2>
+            <p className="text-white/70 text-lg mb-8 max-w-2xl mx-auto">
+              Получайте дайджест лучших материалов форума, советы экспертов и новости агропрома каждую неделю.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto mb-4">
+              <input
+                type="email"
+                placeholder="Ваш email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 px-4 py-3 rounded-full text-white placeholder:text-white/40 outline-none focus:ring-2 focus:ring-green-500"
+                style={{ background: "rgba(0,0,0,0.4)", border: "1px solid rgba(74,222,128,0.25)" }}
+              />
+              <Button className="rounded-full px-6 font-semibold flex-shrink-0" style={{ background: "#16a34a", color: "white" }}>
+                Подписаться
+              </Button>
+            </div>
+            <p className="text-white/40 text-sm">Без спама. Отписаться можно в любой момент.</p>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 py-24 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="rounded-3xl bg-white/[0.03] backdrop-blur-2xl ring-1 ring-white/10 p-12">
-            {/* Main Footer Content */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
-              {/* Brand Section */}
-              <div className="lg:col-span-2">
-                <div className="flex items-center gap-2 mb-6">
-                  <Compass className="w-6 h-6" />
-                  <span className="text-xl font-semibold">Horizon Adventures</span>
-                </div>
-                <p className="text-white/80 leading-relaxed text-pretty">
-                  Официальный туроператор экспедиций в Скрытую Долину — крупнейшую пещеру мира. Мы преданы безопасности, охране природы и незабываемым приключениям.
-                </p>
-              </div>
-
-              {/* Expedition Links */}
-              <div>
-                <h3 className="text-sm font-bold uppercase tracking-wider mb-6">ЭКСПЕДИЦИЯ</h3>
-                <ul className="space-y-3">
-                  {["Маршрут", "Цены", "Список снаряжения", "Фотогалерея"].map((item) => (
-                    <li key={item}>
-                      <a href="#" className="text-white/70 hover:text-white transition-colors text-sm leading-relaxed">
-                        {item}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* About Links */}
-              <div>
-                <h3 className="text-sm font-bold uppercase tracking-wider mb-6">О НАС</h3>
-                <ul className="space-y-3">
-                  {["Наша миссия", "Стандарты безопасности", "Команда", "Охрана природы"].map((item) => (
-                    <li key={item}>
-                      <a href="#" className="text-white/70 hover:text-white transition-colors text-sm leading-relaxed">
-                        {item}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Resources Links */}
-              <div>
-                <h3 className="text-sm font-bold uppercase tracking-wider mb-6">ПОДДЕРЖКА</h3>
-                <ul className="space-y-3">
-                  {["Справочный центр", "Контакты", "Вопросы и ответы", "Условия"].map((item) => (
-                    <li key={item}>
-                      <a href="#" className="text-white/70 hover:text-white transition-colors text-sm leading-relaxed">
-                        {item}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Newsletter Section */}
-            <div className="border-t border-white/10 pt-12 mb-12">
-              <div className="max-w-md">
-                <h3 className="text-lg font-semibold mb-4">Новости экспедиций</h3>
-                <div className="flex gap-3">
-                  <input
-                    type="email"
-                    placeholder="Введите ваш email"
-                    className="flex-1 px-4 py-3 rounded-lg bg-white/5 ring-1 ring-white/20 backdrop-blur border-0 text-white placeholder:text-white/50 focus:ring-2 focus:ring-white/30 focus:outline-none"
-                  />
-                  <Button className="bg-white text-black hover:bg-white/90 rounded-lg px-6 h-[50px]">Подписаться</Button>
-                </div>
-              </div>
-            </div>
-
-            {/* Sub-footer */}
-            <div className="border-t border-white/10 pt-8">
-              <p className="text-white/60 text-sm text-center">© 2025 Horizon Adventures</p>
-            </div>
+      <footer className="relative z-10 py-12 px-6" style={{ borderTop: "1px solid rgba(74,222,128,0.1)" }}>
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-2">
+            <Icon name="Sprout" size={20} className="text-green-400" />
+            <span className="font-bold text-white">АгроФорум</span>
           </div>
+          <div className="flex flex-wrap gap-6 text-white/50 text-sm">
+            <a href="#" className="hover:text-white transition-colors">Форум</a>
+            <a href="#" className="hover:text-white transition-colors">Чаты</a>
+            <a href="#" className="hover:text-white transition-colors">Блогеры</a>
+            <a href="#" className="hover:text-white transition-colors">Контакты</a>
+            <a href="#" className="hover:text-white transition-colors">Политика конфиденциальности</a>
+          </div>
+          <p className="text-white/30 text-sm">© 2024 АгроФорум</p>
         </div>
       </footer>
     </div>
